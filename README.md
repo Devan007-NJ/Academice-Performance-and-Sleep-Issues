@@ -47,16 +47,24 @@ This ensured the dataset was **model-ready and free of encoding bias**.
 
 ## 🤖 Model Used
 ### **Random Forest Regressor**
+### **XGBoostRegressor**
 
-Random Forest was chosen because:
-- It handles **non-linear relationships** well
-- It works effectively with **ordinal-encoded features**
-- It is robust to noise common in survey data
-- Requires minimal assumptions about data distribution
-
+From the two models we can see that XGBoost performed slighlty better than RandomForest with its MAE differing by 0.02
+The **results** from plotting both models are:
+- The model is very accurate on low ordinal scales (0-3)
+- Model becomes unstable on high ordinal values due to skewed data
+- Log transformation greatly helps in decreasing the gap of prediction between the ordinal scales
+- Previous MAE pre-transformation was around 0.25-0.55 but has decreased with log transformation
+- Sample weights have also been provided to the XGBoost for better results
 ### Model Configuration
 ```python
 RandomForestRegressor(
     max_depth=6,
     random_state=100
+)
+XGBoostRegressor(n_estimators=250,
+    max_depth=8,
+    random_state=100,
+    learning_rate=0.25,
+    subsample=0.9
 )
